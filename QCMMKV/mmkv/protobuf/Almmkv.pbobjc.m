@@ -198,7 +198,7 @@ void ALKVPair_ClearValueOneOfCase(ALKVPair *message) {
 
 typedef struct ALKVList__storage_ {
   uint32_t _has_storage_[1];
- __unsafe_unretained NSMutableArray *itemArray;
+  __unsafe_unretained NSMutableArray *itemArray;
 } ALKVList__storage_;
 
 // This method is threadsafe because it is initially called
