@@ -570,6 +570,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MYPTXJ9VBT;
 				INFOPLIST_FILE = QCMMKV/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qc.com.QCMMKV;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -587,6 +588,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = MYPTXJ9VBT;
 				INFOPLIST_FILE = QCMMKV/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qc.com.QCMMKV;
 				PRODUCT_NAME = "$(TARGET_NAME)";

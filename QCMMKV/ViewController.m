@@ -32,22 +32,18 @@
      反向传值的时候数据的变化
      */
     
-    self.mmkv  = [ALMMKV defaultMMKV];
+//   self.mmkv = [ALMMKV defaultMMKV];
     //正确的情况
-    [self.mmkv setObject: @"hello1" forKey:@"string"];
+    [[ALMMKV defaultMMKV] setObject: @"hello1" forKey:@"string"];
     
-    //没有设置mmkv属性,一旦本类中没有mmkv属性，反向传过来的结果得不到
-    //[[ALMMKV  defaultMMKV] setObject: @"hello1" forKey:@"string"];
-    
-//    //但是只要有一个传过来的结果就没问题
-//    NSLog(@"string:%@",[self.mmkv objectOfClass:[NSString class] forKey:@"string"]);
-//    // 输出结果显示   2018-07-17 13:06:34.371413+0800 QCMMKV[7924:147126] string:hello1
-//    CountModel *model = [CountModel new];
-//    model.num = 1;
-//    model.name = @"qiao";
-//    [[ALMMKV defaultMMKV]setInteger:model.num forKey:@"num"];
-//    [[ALMMKV defaultMMKV]setObject:model.name forKey:@"name"];
-//
+    //但是只要有一个传过来的结果就没问题
+    NSLog(@"string:%@",[[ALMMKV defaultMMKV] objectOfClass:[NSString class] forKey:@"string"]);
+    // 输出结果显示   2018-07-17 13:06:34.371413+0800 QCMMKV[7924:147126] string:hello1
+    CountModel *model = [CountModel new];
+    model.num = 1;
+    model.name = @"qiao";
+    [[ALMMKV defaultMMKV]setInteger:model.num forKey:@"num"];
+    [[ALMMKV defaultMMKV]setObject:model.name forKey:@"name"];
     
     
     
@@ -66,14 +62,14 @@
     
     [super viewWillAppear:animated];
     
-    ALMMKV *mmkv = [ALMMKV  defaultMMKV];
+//    ALMMKV *mmkv = [ALMMKV  defaultMMKV];
 //    NSLog(@"string:%@",[self.mmkv objectOfClass:[NSString class] forKey:@"string"]);
-    NSLog(@"string:%@",[self.mmkv  objectOfClass:[NSString class] forKey:@"string"]);
+    NSLog(@"string:%@",[[ALMMKV defaultMMKV] objectOfClass:[NSString class] forKey:@"string"]);
     
     
-//    //如果数据发生变化了，我们进行一些其他操作
-//    NSLog(@"num:%ld",[[ALMMKV defaultMMKV]  integerForKey:@"num"]);
-//    NSLog(@"name:%@",[[ALMMKV defaultMMKV]objectOfClass:[NSString class] forKey:@"name"]);
+    //如果数据发生变化了，我们进行一些其他操作
+    NSLog(@"num:%ld",[[ALMMKV defaultMMKV]  integerForKey:@"num"]);
+    NSLog(@"name:%@",[[ALMMKV defaultMMKV]objectOfClass:[NSString class] forKey:@"name"]);
     
 }
 
