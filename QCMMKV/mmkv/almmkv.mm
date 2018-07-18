@@ -47,40 +47,87 @@ static size_t   kHeaderSize = 18; // sizeof("ALMMKV") + sizeof(version) + sizeof
     almmkv::RWLock _lock;
 }
 
-+ (instancetype)defaultMMKV {
-#if TARGET_OS_IPHONE || TARGET_OS_IOS || TARGET_OS_WATCH || TARGET_OS_TV || TARGET_OS_SIMULATOR
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
-#else
-    NSString *path = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject;
-    path = [path stringByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier];
-#endif
-    path = [path stringByAppendingPathComponent:@"default.mmkv"];
-    return [self mmkvWithPath:path];
-}
+//+ (instancetype)defaultMMKV {
+//
+//#if TARGET_OS_IPHONE || TARGET_OS_IOS || TARGET_OS_WATCH || TARGET_OS_TV || TARGET_OS_SIMULATOR
+//    NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+//#else
+//    NSString *path = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject;
+//    path = [path stringByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier];
+//#endif
+//    path = [path stringByAppendingPathComponent:@"default.mmkv"];
+//    return [self mmkvWithPath:path];
+//
+//
+//}
+//
+//static NSMapTable<NSString *, ALMMKV *> *kInstances;
+//
+//+ (instancetype)mmkvWithPath:(NSString *)path {
+//
+//    static dispatch_semaphore_t kLocalLock;
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        kInstances = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
+//                                           valueOptions:NSPointerFunctionsWeakMemory];
+//        kLocalLock = dispatch_semaphore_create(1);
+//    });
+//
+//    path = path.stringByStandardizingPath;
+//    {
+//        dispatch_semaphore_wait(kLocalLock, DISPATCH_TIME_FOREVER);
+//        ALMMKV_defer {dispatch_semaphore_signal(kLocalLock);};
+//
+//        ALMMKV *mmkv = [kInstances objectForKey:path];
+//        if (mmkv == nil) {
+//            mmkv = [[ALMMKV alloc] initWithFile:path];
+//            [kInstances setObject:mmkv forKey:path];
+//        }
+//        return mmkv;
+//    }
+//}
+//
+static NSMapTable<NSString *, ALMMKV *> *kInstances = nil;
+static ALMMKV * mmkv = nil;
 
-static NSMapTable<NSString *, ALMMKV *> *kInstances;
-+ (instancetype)mmkvWithPath:(NSString *)path {
++ (ALMMKV *)defaultMMKV {
+
     static dispatch_semaphore_t kLocalLock;
     static dispatch_once_t onceToken;
+
+    //return [self mmkvWithPath:path];
     dispatch_once(&onceToken, ^{
+
         kInstances = [NSMapTable mapTableWithKeyOptions:NSPointerFunctionsStrongMemory
                                            valueOptions:NSPointerFunctionsWeakMemory];
         kLocalLock = dispatch_semaphore_create(1);
-    });
-    
-    path = path.stringByStandardizingPath;
-    {
+#if TARGET_OS_IPHONE || TARGET_OS_IOS || TARGET_OS_WATCH || TARGET_OS_TV || TARGET_OS_SIMULATOR
+        NSString *path = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+#else
+        NSString *path = NSSearchPathForDirectoriesInDomains(NSApplicationSupportDirectory, NSUserDomainMask, YES).firstObject;
+        path = [path stringByAppendingPathComponent:[NSBundle mainBundle].bundleIdentifier];
+#endif
+        path = [path stringByAppendingPathComponent:@"default.mmkv"];
+        path = path.stringByStandardizingPath;
         dispatch_semaphore_wait(kLocalLock, DISPATCH_TIME_FOREVER);
         ALMMKV_defer {dispatch_semaphore_signal(kLocalLock);};
         
-        ALMMKV *mmkv = [kInstances objectForKey:path];
         if (mmkv == nil) {
+            mmkv = [kInstances objectForKey:path];
             mmkv = [[ALMMKV alloc] initWithFile:path];
             [kInstances setObject:mmkv forKey:path];
         }
-        return mmkv;
-    }
+
+    });
+    
+    return mmkv;
+
 }
+
+
+
+
+
 
 - (instancetype)init {
     [NSException raise:@"ALMMKVForbiddenException" format:@"Can initialize mmkv via -init"];
